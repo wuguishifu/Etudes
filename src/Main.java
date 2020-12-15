@@ -8,13 +8,26 @@ public class Main {
     // the dimensions of the game
     private static final int width = 800, height = 600;
 
+    private static final int floorHeight = 500;
+
     // position and motion of the player
     private static int pd = 20;
-    private static int px = width/2, py = height/2;
-    private static int dx = 1, dy = 1;
+    private static int px = width/2, py = floorHeight;
+    private static final int dx = 10;
+    private static int dy = 0;
+    private static final int g = 2;
+
+    private static boolean isOnFloor = true;
+    private static boolean jumped = false;
+
+    // left and right motion
+    private static boolean left = false, right = false;
 
     // if the game is over
     private static boolean gameOver = false;
+
+    // game data
+    private static final long FPS = 20L;
 
     public static void main(String[] args) {
         // the display of the game
@@ -26,7 +39,7 @@ public class Main {
             @Override
             public void paint(Graphics g) {
                 super.paint(g);
-                g.drawRect(px - pd/2, py - pd/2, px + pd/2, py + pd/2);
+                g.fillRect(px - pd/2, py - pd, pd, pd);
             }
         };
 
@@ -46,31 +59,64 @@ public class Main {
             public void keyPressed(KeyEvent keyEvent) {
                 switch (keyEvent.getKeyCode()) {
                     case KeyEvent.VK_ESCAPE : gameOver = true; break;
-                    case KeyEvent.VK_A : px -= dx; break;
-                    case KeyEvent.VK_D : px += dx; break;
-                    case KeyEvent.VK_W : py += dy; break;
-                    case KeyEvent.VK_S : py -= dy; break;
+                    case KeyEvent.VK_A: left = true; break; // left
+                    case KeyEvent.VK_D: right = true; break; // right
+                    case KeyEvent.VK_S: break; // down
+                    case KeyEvent.VK_W: break; // up
+                    case KeyEvent.VK_SPACE :
+                        if (!jumped) {
+                            py -= 1;
+                            dy = -20;
+                            isOnFloor = false;
+                            jumped = true;
+                        }
+                        break;
                 }
             }
 
             @Override
             public void keyReleased(KeyEvent keyEvent) {
-
+                switch (keyEvent.getKeyCode()) {
+                    case KeyEvent.VK_A: left = false; break; // left
+                    case KeyEvent.VK_D: right = false; break; // right
+                    case KeyEvent.VK_S: break; // down
+                    case KeyEvent.VK_W: break; // up
+                }
             }
         });
 
         frame.setVisible(true);
 
-        int tps = 25;
-        int numMills = 1000 / tps;
-        long currentTime = System.currentTimeMillis();
-        long lastTick = System.currentTimeMillis();
-
         while (!gameOver) {
-            currentTime ++;
-            if (currentTime - lastTick > numMills) {
-                lastTick = currentTime;
-                panel.repaint();
+            try {
+                Thread.sleep(FPS);
+            } catch (InterruptedException ignored) {}
+            System.out.println(py);
+            movePlayer();
+            panel.repaint();
+        }
+
+        // closing the game
+        frame.dispose();
+    }
+
+    // moves the player
+    public static void movePlayer() {
+        if (left) {
+            px -= dx;
+        }
+        if (right) {
+            px += dx;
+        }
+        if (!isOnFloor) {
+            if (py + dy > floorHeight) {
+                py = floorHeight;
+                jumped = false;
+                isOnFloor = true;
+                dy = 0;
+            } else {
+                py += dy;
+                dy += g;
             }
         }
     }
