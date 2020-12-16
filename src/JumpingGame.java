@@ -5,7 +5,7 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Main {
+public class JumpingGame {
 
     // the dimensions of the game
     private static final int width = 800, height = 600;
