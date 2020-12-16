@@ -188,7 +188,6 @@ public class JumpingGame {
             }
 
             if (hasCollided) {
-                System.out.println("Collided");
                 break;
             }
         }
