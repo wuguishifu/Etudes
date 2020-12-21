@@ -150,12 +150,12 @@ public class JumpingGame {
                 }
                 movePlayer();
                 updateCacti();
-//                if (hasCollided) {
-//                    Graphics g = panel.getGraphics();
-//                    g.setColor(Color.BLACK);
-//                    g.fillRect(0, height, width, height);
-//                    gameOver = true;
-//                }
+                if (hasCollided) {
+                    Graphics g = panel.getGraphics();
+                    g.setColor(Color.BLACK);
+                    g.fillRect(0, height, width, height);
+                    gameOver = true;
+                }
                 updateClouds();
                 panel.repaint();
                 updateScore();
