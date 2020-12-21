@@ -57,6 +57,7 @@ public class JumpingGame {
     public static void main(String[] args) {
         // the display of the game
         frame = new JFrame();
+        frame.setBackground(new Color(173, 240, 255));
 
         // handles painting the scene
         panel = new JPanel() {
@@ -70,6 +71,7 @@ public class JumpingGame {
                     g.fillRect(c[0], floorHeight - c[1], cactusWidth, c[1]);
                 }
 
+                g.setColor(Color.LIGHT_GRAY);
                 for (int[] c : clouds) {
                     g.fillRect(c[0], c[1]-c[3], c[2], c[3]);
                 }
@@ -77,8 +79,13 @@ public class JumpingGame {
                 g.setColor(Color.LIGHT_GRAY);
                 g.fillRect(0, floorHeight, width, 100);
 
+                g.setColor(Color.DARK_GRAY);
+                g.fillRect(0, floorHeight, width, 200);
+
             }
         };
+
+        panel.setBackground(new Color(173, 240, 255));
 
         panel.setSize(new Dimension(width, height));
 
@@ -143,12 +150,12 @@ public class JumpingGame {
                 }
                 movePlayer();
                 updateCacti();
-                if (hasCollided) {
-                    Graphics g = panel.getGraphics();
-                    g.setColor(Color.BLACK);
-                    g.fillRect(0, height, width, height);
-                    gameOver = true;
-                }
+//                if (hasCollided) {
+//                    Graphics g = panel.getGraphics();
+//                    g.setColor(Color.BLACK);
+//                    g.fillRect(0, height, width, height);
+//                    gameOver = true;
+//                }
                 updateClouds();
                 panel.repaint();
                 updateScore();
